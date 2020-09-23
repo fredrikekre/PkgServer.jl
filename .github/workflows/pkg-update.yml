@@ -13,7 +13,7 @@ jobs:
       - name: Pkg.update
         run: |
           julia --project=. -e 'using Pkg; Pkg.update()'
-          julia --project=. -e 'Pkg.status(diff=true)' > update.diff
+          julia --project=. -e 'using Pkg; Pkg.status(diff=true)' > update.diff
       - name: 'Create pull request'
         uses: peter-evans/create-pull-request@v3 
         with:
