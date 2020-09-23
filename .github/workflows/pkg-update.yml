@@ -21,9 +21,9 @@ jobs:
           body: |
             Project diff:
             ```
-            ${{ (cat update.diff) }}
+            $(cat update.diff)
             ```
           commit-message: |
             Automatic Pkg.update() with the following project diff:
             
-            ${{ (cat update.diff) }}
+            $(cat update.diff)
