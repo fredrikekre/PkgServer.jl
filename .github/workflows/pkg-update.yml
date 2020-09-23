@@ -1,0 +1,29 @@
+name: Pkg.update
+on:
+  schedule:
+    - cron: */5 * * * *
+jobs:
+  update-manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: 1.5
+      - name: Pkg.update
+        run: |
+          julia --project=. -e 'using Pkg; Pkg.update()'
+          julia --project=. -e 'Pkg.status(diff=true)' > update.diff
+      - name: 'Create pull request'
+        uses: peter-evans/create-pull-request@v3 
+        with:
+          title: 'Automatic Pkg.update()'
+          body: |
+            Project diff:
+            ```
+            ${{ cat update.diff }}
+            ```
+          commit-message: |
+            Automatic Pkg.update() with the following project diff:
+            
+            ${{ PKGDIFF }}
