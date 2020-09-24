@@ -13,7 +13,7 @@ jobs:
       - name: Pkg.update
         run: |
           julia --project=. -e 'using Pkg; Pkg.update()'
-          julia --project=. -e 'using Pkg; Pkg.status(diff=true)' > update.diff
+          echo "::set-env name=PKG_DIFF::$(julia --project=. -e 'using Pkg; Pkg.status(diff=true)')"
       - name: 'Create pull request'
         uses: peter-evans/create-pull-request@v3 
         with:
@@ -21,9 +21,9 @@ jobs:
           body: |
             Project diff:
             ```
-            $(cat update.diff)
+            ${{ env.PKG_DIFF }}
             ```
           commit-message: |
             Automatic Pkg.update() with the following project diff:
             
-            $(cat update.diff)
+            ${{ env.PKG_DIFF }}
