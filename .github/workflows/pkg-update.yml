@@ -1,7 +1,7 @@
 name: Pkg.update
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '*/5 * * * *'
 jobs:
   update-manifest:
     runs-on: ubuntu-latest
