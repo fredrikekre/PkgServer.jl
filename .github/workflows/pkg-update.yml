@@ -15,7 +15,10 @@ jobs:
         run: |
           julia --project=. -e 'using Pkg; Pkg.update()'
           echo 'PKG_DIFF<<EOF' >> $GITHUB_ENV
+          echo 'pkg> status --project --diff' >> $GITHUB_ENV
           julia --project=. -e 'using Pkg; Pkg.status(; mode=PKGMODE_PROJECT, diff=true)' >> $GITHUB_ENV
+          echo '' >> $GITHUB_ENV
+          echo 'pkg> status --manifest --diff' >> $GITHUB_ENV
           julia --project=. -e 'using Pkg; Pkg.status(; mode=PKGMODE_MANIFEST, diff=true)' >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
       - name: 'Create pull request'
@@ -26,11 +29,9 @@ jobs:
           body: |
             Automatic `Pkg.update()` with the following changes:
             ```
-            pkg> status --diff
             ${{ env.PKG_DIFF }}
             ```
           commit-message: |
             Automatic Pkg.update() with the following changes:
 
-            pkg> status --diff
             ${{ env.PKG_DIFF }}
